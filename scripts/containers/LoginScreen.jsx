@@ -13,7 +13,6 @@ export default class LoginScreen extends React.Component {
   render() {
     return (
       <div>
-        <h2>Login Screen</h2>
         <LoginForm />
       </div>
     );

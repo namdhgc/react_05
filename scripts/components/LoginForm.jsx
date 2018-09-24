@@ -14,9 +14,7 @@ export default class LoginForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     if (this.handleValidation()) {
-      console.log('true')
-    } else {
-      console.log('false')
+      alert('Send login');
     }
   }
 
@@ -74,16 +72,69 @@ export default class LoginForm extends React.Component {
     console.log('render')
     return (
       <div>
-        Login Form
-        <br />
-        <input type="text" name="email" value={this.state.email} onChange={(event) => this.handleChange(event)} />
-        <span>{this.state.errors.email}</span>
-        <br />
-        <input type="password" name="password" value={this.state.password} onChange={(event) => this.handleChange(event)} />
-        <span>{this.state.errors.password}</span>
-        <br />
-        <button type="button" onClick={(event) => this.handleSubmit(event)}>Login</button>
-        <br />
+        <div className="user-login-5">
+          <div className="row bs-reset">
+            <div className="col-md-6 bs-reset">
+              <div className="login-bg">
+                {/*
+                  <img className="login-logo" src="../assets/pages/img/login/logo.png" />
+                */}
+              </div>
+              
+            </div>
+            <div className="col-md-6 login-container bs-reset mt-login-5-bsfix">
+              <div className="login-content">
+                <h1>Admin Login</h1>
+                <form action="javascript:;" className="login-form" method="post">
+                  <div className={`alert alert-danger ${Object.keys(this.state.errors).length > 0 ? '' : 'display-hide'}`}>
+                    <button className="close" data-close="alert"></button>
+                    <span>{this.state.errors.email}</span>
+                    {this.state.errors.email && this.state.errors.password ? <br /> : ''}
+                    <span>{this.state.errors.password}</span>
+                  </div>
+                  <div className="row">
+                    <div className="col-xs-6">
+                      <input
+                        className="form-control form-control-solid placeholder-no-fix form-group"
+                        type="text"
+                        name="email"
+                        placeholder="Email"
+                        value={this.state.email}
+                        onChange={(event) => this.handleChange(event)}
+                      />
+                    </div>
+                    <div className="col-xs-6">
+                      <input
+                        className="form-control form-control-solid placeholder-no-fix form-group"
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        value={this.state.password}
+                        onChange={(event) => this.handleChange(event)}
+                      />
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-sm-4">
+                      {/*<div className="rem-password">
+                          <label className="rememberme mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" name="remember" value="1" /> Remember me
+                            <span></span>
+                          </label>
+                      </div>*/}
+                    </div>
+                    <div className="col-sm-8 text-right">
+                      {/*<div className="forgot-password">
+                        <a href="javascript:;" id="forget-password" className="forget-password">Forgot Password?</a>
+                      </div>*/}
+                      <button className="btn green" onClick={(event) => this.handleSubmit(event)}>Sign In</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
