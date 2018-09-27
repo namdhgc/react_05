@@ -7,40 +7,74 @@ export default class LoginForm extends React.Component {
     this.state = {
       email: '',
       password: '',
-      errors: {},
+      errors: {
+        email: '',
+        password: ''
+      },
     }
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    if (this.handleValidation()) {
-      alert('Send login');
-    }
-  }
-
-  handleChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value
-    }, function() {
-      this.handleValidation();
-    })
-  }
-
-  handleValidation() {
-    let errors = {};
     let formIsValid = true;
+    const { errors } = this.state;
     const { email } = this.state;
     const { password } = this.state;
     const isEmail = this.validationEmail(email);
     const isPassword = this.validationPassword(password);
 
-    if (Object.keys(isEmail).length > 0 || Object.keys(isPassword).length > 0) {
+    Object.keys(errors).forEach(function(key) {
+      // console.log(key, errors[key]);
+      if (errors[key] !== '') {
+        formIsValid = false;
+      }
+    });
+
+    console.log(isEmail)
+    console.log(password)
+
+    if (Object.keys(isEmail).length > 0 || Object.keys(password).length > 0) {
+      formIsValid = false;
+    }
+    
+    if (formIsValid) {
+      alert('Send submit')
+    }
+  }
+
+  handleChange(event) {
+    this.handleValidation(event);
+  }
+
+  handleValidation(event) {
+    let { errors } = this.state;
+    let formIsValid = true;
+    let isEmail = null;
+    let isPassword = null;
+    if (event.target.name === 'email') {
+      errors['email'] = '';
+      isEmail = this.validationEmail(event.target.value);
+    }
+
+    if (event.target.name === 'password') {
+      errors['password'] = '';
+      isPassword = this.validationPassword(event.target.value);
+    }
+
+    if (typeof(isEmail) !== 'undefined' && isEmail !== null && Object.keys(isEmail).length > 0) {
       errors['email'] = isEmail.email;
+      formIsValid = false;
+    }
+
+    if (typeof(isPassword) !== 'undefined' && isPassword !== null && Object.keys(isPassword).length > 0) {
       errors['password'] = isPassword.password;
       formIsValid = false;
     }
 
-    this.setState({ errors: errors })
+    this.setState({
+      [event.target.name]: event.target.value,
+      errors: errors
+    })
     return formIsValid;
   }
 
@@ -86,7 +120,7 @@ export default class LoginForm extends React.Component {
               <div className="login-content">
                 <h1>Admin Login</h1>
                 <form action="javascript:;" className="login-form" method="post">
-                  <div className={`alert alert-danger ${Object.keys(this.state.errors).length > 0 ? '' : 'display-hide'}`}>
+                  <div className={`alert alert-danger ${(this.state.errors.email !== '' || this.state.errors.password !== '') ? '' : 'display-hide'}`}>
                     <button className="close" data-close="alert"></button>
                     <span>{this.state.errors.email}</span>
                     {this.state.errors.email && this.state.errors.password ? <br /> : ''}
