@@ -5,8 +5,10 @@ export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      data: {
+        email: '',
+        password: '',
+      },
       errors: {
         email: '',
         password: ''
@@ -16,26 +18,28 @@ export default class LoginForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    let data = [];
     let formIsValid = true;
     const { errors } = this.state;
-    const { email } = this.state;
-    const { password } = this.state;
-    const isEmail = this.validationEmail(email);
-    const isPassword = this.validationPassword(password);
+    const { email } = this.state.data;
+    const { password } = this.state.data;
+    data['email'] = email;
+    data['password'] = password;
+    // const isEmail = this.validationEmail(email);
+    // const isPassword = this.validationPassword(password);
 
-    Object.keys(errors).forEach(function(key) {
-      // console.log(key, errors[key]);
-      if (errors[key] !== '') {
-        formIsValid = false;
-      }
-    });
+    // Object.keys(errors).forEach(function(key) {
+    //   // console.log(key, errors[key]);
+    //   if (errors[key] !== '') {
+    //     formIsValid = false;
+    //   }
+    // });
 
-    console.log(isEmail)
-    console.log(password)
+    // if (Object.keys(isEmail).length > 0 || Object.keys(isPassword).length > 0) {
+    //   formIsValid = false;
+    // }
 
-    if (Object.keys(isEmail).length > 0 || Object.keys(password).length > 0) {
-      formIsValid = false;
-    }
+    formIsValid = this.handleValidation(data);
     
     if (formIsValid) {
       alert('Send submit')
@@ -43,23 +47,21 @@ export default class LoginForm extends React.Component {
   }
 
   handleChange(event) {
-    this.handleValidation(event);
+    let { data } = this.state;
+    data[event.target.name] = event.target.value;
+    this.handleValidation(data);
   }
 
-  handleValidation(event) {
+  handleValidation(data) {
     let { errors } = this.state;
     let formIsValid = true;
     let isEmail = null;
     let isPassword = null;
-    if (event.target.name === 'email') {
-      errors['email'] = '';
-      isEmail = this.validationEmail(event.target.value);
-    }
 
-    if (event.target.name === 'password') {
-      errors['password'] = '';
-      isPassword = this.validationPassword(event.target.value);
-    }
+    errors['email'] = '';
+    errors['password'] = '';
+    isEmail = this.validationEmail(data['email']);
+    isPassword = this.validationPassword(data['password']);
 
     if (typeof(isEmail) !== 'undefined' && isEmail !== null && Object.keys(isEmail).length > 0) {
       errors['email'] = isEmail.email;
@@ -72,7 +74,7 @@ export default class LoginForm extends React.Component {
     }
 
     this.setState({
-      [event.target.name]: event.target.value,
+      data: data,
       errors: errors
     })
     return formIsValid;
@@ -82,6 +84,9 @@ export default class LoginForm extends React.Component {
     const regexEmail = /\S+@\S+\.\S+/;
     const isEmail = regexEmail.test(email);
     let errors = {};
+    if (email === '') {
+      errors.email = "Email can not be empty!";
+    }
     if (!isEmail) {
       errors.email = "Your email is not valid!";
     }
@@ -133,7 +138,7 @@ export default class LoginForm extends React.Component {
                         type="text"
                         name="email"
                         placeholder="Email"
-                        value={this.state.email}
+                        value={this.state.data.email}
                         onChange={(event) => this.handleChange(event)}
                       />
                     </div>
@@ -143,7 +148,7 @@ export default class LoginForm extends React.Component {
                         type="password"
                         name="password"
                         placeholder="Password"
-                        value={this.state.password}
+                        value={this.state.data.password}
                         onChange={(event) => this.handleChange(event)}
                       />
                     </div>

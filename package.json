@@ -2,15 +2,29 @@
   "name": "Study_Reactjs_Project",
   "version": "1.0.0",
   "description": "Learning about controlled and uncontrolled component on React js",
+  "watch": {
+    "test": {
+      "patterns": ["src", "test", "scripts"],
+      "extensions": "js, jsx",
+      "ignore": "node_modules",
+      "quiet": true,
+      "legacyWatch": true,
+      "delay": 2500,
+      "runOnChangeOnly": true
+    }
+  },
   "scripts": {
     "dev": "webpack --mode development",
-    "prod": "webpack --mode production"
+    "prod": "webpack --mode production",
+    "test": "npm run dev",
+    "watch": "npm-watch"
   },
   "dependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "npm-watch": "^0.4.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "webpack": "^4.19.1",
